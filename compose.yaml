@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: frontend-base-postgres
+    environment:
+      POSTGRES_DB: frontend_base
+      POSTGRES_USER: frontend_base
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-frontend_base_dev}
+    ports:
+      - "5432:5432"
+    volumes:
+      - frontend_base_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U frontend_base -d frontend_base"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  frontend_base_postgres:
